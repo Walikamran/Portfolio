@@ -1,0 +1,27 @@
+﻿@page "/search"
+@using System.Linq
+
+<h3>Simple Search</h3>
+
+<input type="text" @bind="searchText" placeholder="Type to search..." />
+<button @onclick="PerformSearch">Search</button>
+
+<p>@searchResult</p>
+
+@code {
+    private string searchText = string.Empty;
+    private string searchResult = string.Empty;
+
+    private void PerformSearch()
+    {
+        // You can replace this logic with real data filtering
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            searchResult = "Please enter a search term.";
+        }
+        else
+        {
+            searchResult = $"You searched for: {searchText}";
+        }
+    }
+}
