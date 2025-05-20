@@ -1,0 +1,37 @@
+﻿@page "/portfolio"
+
+<h1>My Portfolio</h1>
+
+<div class="portfolio-grid">
+    @foreach (var project in Projects)
+    {
+        <div class="card">
+            <img src="images/myphoto.jpg" alt="My Photo" style="border-radius: 10px; width: 150px;" />
+            <h3>@project.Title</h3>
+            <p>@project.Description</p>
+            <p>@project.Phone</p>
+            <p>@project.Email</p>
+        </div>
+    }
+
+</div>
+
+@code {
+    class Project
+    {
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string Phone { get; set; }         // Add this
+        public string Email { get; set; }         // And this
+    }
+
+    List<Project> Projects = new()
+    {
+        new Project {
+            Title = "Abdul Wali Kamran",
+            Description = "Jacob Catsstraat 7 Steenwijk",
+            Phone = "+31 (0) 6 26 68 3177",
+            Email = "Dwalikamran9565@gmail.com"
+        },
+    };
+}
