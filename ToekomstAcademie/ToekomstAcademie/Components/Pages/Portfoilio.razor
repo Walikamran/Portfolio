@@ -1,37 +1,74 @@
 ﻿@page "/portfolio"
 
-<h1>My Portfolio</h1>
-
-<div class="portfolio-grid">
-    @foreach (var project in Projects)
-    {
-        <div class="card">
-            <img src="images/myphoto.jpg" alt="My Photo" style="border-radius: 10px; width: 150px;" />
-            <h3>@project.Title</h3>
-            <p>@project.Description</p>
-            <p>@project.Phone</p>
-            <p>@project.Email</p>
+<!-- HERO SECTION -->
+<section class="hero-section">
+    <div class="hero-content">
+        <img src="images/me.jpg" alt="Abdul Wali Kamran" class="hero-photo" />
+        <div class="hero-text">
+            <p class="greeting"></p>
+            <h2 class="name">Abdul Wali Kamran</h2>
+            <p class="role">ICT Medewerker & Systeembeheerder</p>
+            <a href="files/AbdulWaliKamran-CV.pdf" download class="btn">📄 Download CV</a>
         </div>
-    }
+    </div>
+</section>
 
-</div>
+<!-- ABOUT ME SECTION -->
+<section class="about-section">
+    <h2>Over Mij</h2>
+    <div class="about-content">
+        <div class="about-text">
+            <p>
+                Leergierige en nauwkeurige ICT'er met ervaring in netwerken, systeeminstallatie en support. Flexibel, zelfstandig en altijd gericht op resultaat.
+            </p>
+            <ul>
+                <li><strong>Adres:</strong> Jacob Catsstraat 7, Steenwijk</li>
+                <li><strong>Telefoon:</strong> +31 (0) 6 26 68 3177</li>
+                <li><strong>Email:</strong> walikamran9565@gmail.com</li>
+                <li><strong>Talen:</strong> Pashto, Dari, Nederlands (B2), Engels (B1)</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- SKILLS SECTION -->
+<section class="skills-section">
+    <h2>Mijn Vaardigheden</h2>
+    <div class="skill">
+        <label>Zelfstandig werken</label>
+        <progress max="100" value="90"></progress>
+    </div>
+    <div class="skill">
+        <label>Probleemoplossend vermogen</label>
+        <progress max="100" value="85"></progress>
+    </div>
+    <div class="skill">
+        <label>Flexibiliteit</label>
+        <progress max="100" value="80"></progress>
+    </div>
+    <div class="skill">
+        <label>Netwerkbeheer & Windows Server</label>
+        <progress max="100" value="75"></progress>
+    </div>
+</section>
 
 @code {
-    class Project
-    {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public string Phone { get; set; }         // Add this
-        public string Email { get; set; }         // And this
-    }
-
-    List<Project> Projects = new()
-    {
-        new Project {
-            Title = "Abdul Wali Kamran",
-            Description = "Jacob Catsstraat 7 Steenwijk",
-            Phone = "+31 (0) 6 26 68 3177",
-            Email = "Dwalikamran9565@gmail.com"
-        },
-    };
 }
+<!-- HOBBIES SECTION -->
+<section class="hobbies-section">
+    <h2> <i>Hobby's</i> </h2>
+    <div class="hobby-list">
+        <div class="hobby-card">
+            <span>💪</span>
+            <p>Sporten – actief bezig zijn om fysiek en mentaal fit te blijven</p>
+        </div>
+        <div class="hobby-card">
+            <span>🖥️</span>
+            <p>Systeemcreatie – systemen ontwerpen en optimaliseren</p>
+        </div>
+        <div class="hobby-card">
+            <span>🤝</span>
+            <p>Mensen helpen – problemen oplossen en ondersteuning bieden</p>
+        </div>
+    </div>
+</section>

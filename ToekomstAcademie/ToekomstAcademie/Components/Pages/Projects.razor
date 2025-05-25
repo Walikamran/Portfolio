@@ -1,0 +1,95 @@
+﻿@page "/projects"
+
+<PageTitle>My Projects</PageTitle>
+
+<section class="projects-header">
+    <div class="container">
+        <h1>My <span class="highlight">Projects</span></h1>
+        <p class="subtitle">A collection of my recent work and creations</p>
+    </div>
+</section>
+
+<section class="projects-container">
+    <div class="container">
+        <div class="project-grid">
+            @foreach (var project in Projectslist)
+            {
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="@project.ImageUrl" alt="@project.Title" />
+                        <div class="project-tag">@project.Category</div>
+                    </div>
+                    <div class="project-content">
+                        <h3>@project.Title</h3>
+                        <p>@project.Description</p>
+                        <div class="project-tech">
+                            @foreach (var tech in project.Technologies.Take(3))
+                            {
+                                <span>@tech</span>
+                            }
+                        </div>
+                        <div class="project-links">
+                            @if (!string.IsNullOrEmpty(project.LiveUrl))
+                            {
+                                <a href="@project.LiveUrl" target="_blank" class="btn btn-primary">
+                                    <i class="fas fa-external-link-alt"></i> Live Demo
+                                </a>
+                            }
+                            @if (!string.IsNullOrEmpty(project.CodeUrl))
+                            {
+                                <a href="@project.CodeUrl" target="_blank" class="btn btn-secondary">
+                                    <i class="fab fa-github"></i> View Code
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    private List<Project> Projectslist = new()
+    {
+        new Project
+        {
+            Title = "Pi-Hole",
+            Category = "Privacy",
+            Description = "Pi-hole is een open-source netwerktool die fungeert als een advertentie- en trackerblocker op netwerk-niveau. Het wordt vaak geïnstalleerd op een Raspberry Pi, maar kan ook op andere Linux-systemen draaien..",
+            ImageUrl = "/images/pi.png",
+            Technologies = new List<string> { "Raspberry-Pi", "Hyper-V", ".Ubunto server", "SQL Server" },
+            LiveUrl = "https://pi-hole.net/blog/2018/01/13/pi-hole-web-interface-the-next-generation/#page-content",
+            CodeUrl = "https://github.com/yourusername/ecommerce-platform"
+        },
+        new Project
+        {
+            Title = "Task Management App",
+            Category = "Web Application",
+            Description = "Productivity application for team collaboration and task tracking.",
+            ImageUrl = "/images/projects/taskmanager.jpg",
+            Technologies = new List<string> { "Blazor WASM", "Azure", "SignalR" },
+            CodeUrl = "https://github.com/yourusername/task-manager"
+        },
+        new Project
+        {
+            Title = "Portfolio Website",
+            Category = "Website",
+            Description = "PrivePortfolio-website gecreëerd met Blazor.",
+            ImageUrl = "/images/bg.jpg",
+            Technologies = new List<string> { "Blazor", "CSS", "HTML" },
+            LiveUrl = "https://yourportfolio.com"
+        }
+    };
+
+    public class Project
+    {
+        public string Title { get; set; }
+        public string Category { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+        public List<string> Technologies { get; set; }
+        public string LiveUrl { get; set; }
+        public string CodeUrl { get; set; }
+    }
+}
