@@ -66,6 +66,8 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
+
+/* Portfolio section */
 .hero-section {
     background-color: #0078d4;
     color: white;
@@ -348,6 +350,8 @@ progress {
         font-size: 2rem;
     }
 }
+
+/*Home Pagina*/
 .home-page {
     font-family: 'Segoe UI', sans-serif;
     color: #222;
