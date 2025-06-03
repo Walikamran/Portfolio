@@ -1,55 +1,93 @@
 ﻿@page "/"
 
 <div class="home-page">
-    <!-- TOP SEARCH BAR -->
-    <div class="search-bar-top">
-        <input placeholder="Zoek project, technologie..." />
-        <input placeholder="Categorie" />
-        <button class="search-btn">
-            <i class="bi bi-search"></i>
-        </button>
-    </div>
-
-    <!-- HERO SECTION -->
-    <section class="hero-section">
+    <section class="hero-section home-page">
         <div class="hero-text">
-            <h1>Welkom, ik ben Abdul Wali Kamran</h1>
-            <p>Een gepassioneerde ICT professional met ervaring in systeembeheer, netwerken en support.</p>
-            <a href="/projects" class="explore-btn">📁 Bekijk mijn projecten</a>
-        </div>
-    </section>
+            <h1>Zoek projecten & technologieën</h1>
+            <p>Verken innovatieve ideeën</p>
 
-    <!-- TOOLS SECTION -->
-    <section class="tools-section">
-        <h2 class="section-title">Tools die mijn projecten ondersteunen</h2>
-        <div class="tool-buttons">
-            <a class="tool-btn" href="https://code.visualstudio.com/" target="_blank">🖥️ Visual Studio Code</a>
-            <a class="tool-btn" href="https://www.raspberrypi.com/" target="_blank">🍓 Raspberry Pi</a>
-            <a class="tool-btn" href="https://github.com/" target="_blank">🐙 GitHub</a>
-            <a class="tool-btn" href="https://www.mysql.com/" target="_blank">🛢️ MySQL</a>
-            <a class="tool-btn" href="https://www.microsoft.com/en-us/windows/" target="_blank">🪟 Windows</a>
-        </div>
-    </section>
+            <!-- SEARCH BAR -->
+            <div class="search-bar">
+                <input type="text" placeholder="Zoek project, technologie" @bind="searchTerm" />
+                <select>
+                    <option>Categorie</option>
+                    <!-- Add real categories if needed -->
+                </select>
+                <button><i class="bi bi-search"></i></button>
+            </div>
 
-    <!-- SOCIAL MEDIA SECTION -->
-    <section class="social-media-section">
-        <h2>Volg mij op</h2>
-        <div class="social-links">
-            <a href="https://www.instagram.com/walikamran81?igsh=ZXhpYWQ4bzRvMHVn" target="_blank">
-                <i class="bi bi-instagram"></i> 
-            </a>
-            <a href="https://x.com/walikamran81?t=PF0N3CRoj7TlNn3kYnkd2g&s=08" target="_blank">
-                <i class="bi bi-twitter-x"></i> 
-            </a>
-            <a href="https://www.facebook.com/share/15GyEnL5HM/" target="_blank">
-                <i class="bi bi-facebook"></i> 
-            </a>
-            <a href="https://www.linkedin.com/in/abdul-wali-kamran-3b0563227" target="_blank">
-                <i class="bi bi-linkedin"></i> 
-            </a>
-            <a href="mailto:walikamran9565@gmail.com">
-                <i class="bi bi-envelope-fill"></i> 
-            </a>
+            <!-- Search Results -->
+            <div class="project-results" style="margin-top: 2rem;">
+                @if (filteredProjects.Count == 0 && !string.IsNullOrWhiteSpace(searchTerm))
+                {
+                    <p>Geen resultaten gevonden.</p>
+                }
+                else
+                {
+                    @foreach (var project in filteredProjects)
+                    {
+                        <div class="project-card">
+                            <h3>@project.Title</h3>
+                            <p>@project.Description</p>
+                            <a href="/projects/@project.Id" class="project-link-btn">Bekijk</a>
+                        </div>
+                    }
+                }
+            </div>
+
+            <!-- LINK TO ALL PROJECTS -->
+            <div class="project-link" style="margin-top: 2rem;">
+                <a href="/projects" class="explore-btn">📁 Bekijk mijn projecten</a>
+            </div>
         </div>
     </section>
 </div>
+
+<!-- TOOLS SECTION -->
+<section class="tools-section">
+    <h2 class="section-title">Tools die mijn projecten ondersteunen</h2>
+    <div class="tool-buttons">
+        <a class="tool-btn" href="https://code.visualstudio.com/" target="_blank">🖥️ Visual Studio Code</a>
+        <a class="tool-btn" href="https://www.raspberrypi.com/" target="_blank">🍓 Raspberry Pi</a>
+        <a class="tool-btn" href="https://github.com/" target="_blank">🐙 GitHub</a>
+        <a class="tool-btn" href="https://www.mysql.com/" target="_blank">🛢️ MySQL</a>
+        <a class="tool-btn" href="https://www.microsoft.com/en-us/windows/" target="_blank">🪟 Windows</a>
+    </div>
+</section>
+
+<!-- SOCIAL MEDIA SECTION -->
+<section class="social-media-section">
+    <h2>Volg mij op</h2>
+    <div class="social-links">
+        <a href="https://www.instagram.com/walikamran81?igsh=ZXhpYWQ4bzRvMHVn" target="_blank"><i class="bi bi-instagram"></i></a>
+        <a href="https://x.com/walikamran81?t=PF0N3CRoj7TlNn3kYnkd2g&s=08" target="_blank"><i class="bi bi-twitter-x"></i></a>
+        <a href="https://www.facebook.com/share/15GyEnL5HM/" target="_blank"><i class="bi bi-facebook"></i></a>
+        <a href="https://www.linkedin.com/in/abdul-wali-kamran-3b0563227" target="_blank"><i class="bi bi-linkedin"></i></a>
+        <a href="mailto:walikamran9565@gmail.com"><i class="bi bi-envelope-fill"></i></a>
+    </div>
+</section>
+
+@code {
+    private string searchTerm = "";
+
+    private List<Project> allProjects = new()
+    {
+        new Project { Id = 1, Title = "Pi-Hole", Description = "Pi-hole is een open-source netwerktool die fungeert als een advertentie- en trackerblocker op netwerk-niveau. Het wordt vaak geïnstalleerd op een Raspberry Pi, maar kan ook op andere Linux-systemen draaien.." },
+        new Project { Id = 2, Title = "Energie App", Description = "App voor energie monitoring" },
+        new Project { Id = 3, Title = "Waterbeheer Systeem", Description = "Slim systeem voor waterbeheer" }
+    };
+
+    private List<Project> filteredProjects => string.IsNullOrWhiteSpace(searchTerm)
+        ? new List<Project>()
+        : allProjects.Where(p =>
+            p.Title.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+            p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+        ).ToList();
+
+    public class Project
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+    }
+}

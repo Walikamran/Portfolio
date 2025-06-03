@@ -51,7 +51,7 @@ h1:focus {
 }
 
 body {
-    background-color: lightslategrey !important;
+    background-color: #1c2e3f;
     color: darkgray;
 }
 
@@ -186,7 +186,7 @@ progress {
 }
 
 .hobby-card {
-    background-color: lightseagreen;
+    background-color: #414446;
     padding: 1rem;
     flex: 1 1 250px;
     border-radius: 12px;
@@ -349,51 +349,17 @@ progress {
     }
 }
 
-/*Home Pagina*/
+/* === General Home Page Styles === */
 .home-page {
     font-family: 'Segoe UI', sans-serif;
-    color: #222;
+    color: #fff;
 }
 
-    /* === SEARCH BAR === */
-    .home-page .search-bar-top {
-        display: flex;
-        gap: 0.5rem;
-        background: #131619c2;
-        padding: 0.75rem 1rem;
-        border-radius: 40px;
-        position: absolute;
-        top: 5rem;
-        left: 59%;
-        transform: translateX(-50%);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        z-index: 10;
-        flex-wrap: wrap;
-    }
-
-        .home-page .search-bar-top input {
-            border: none;
-            padding: 0.6rem 1rem;
-            border-radius: 30px;
-            width: 200px;
-        }
-
-    .home-page .search-btn {
-        background-color: #0a58ca;
-        color: white;
-        border: none;
-        border-radius: 30px;
-        padding: 0.6rem 1.2rem;
-        font-size: 1.1rem;
-        cursor: pointer;
-    }
-
-    /* === Hero section === */
+    /* === Hero Section === */
     .home-page .hero-section {
         background-image: url('images/bg.jpg');
         background-size: cover;
         background-position: center;
-        color: white;
         padding: 10rem 2rem 4rem;
         text-align: center;
         min-height: 90vh;
@@ -413,20 +379,53 @@ progress {
         margin-bottom: 2rem;
     }
 
-    .home-page .explore-btn {
-        background-color: white;
-        color: #0078d4;
-        font-weight: bold;
-        padding: 0.8rem 1.6rem;
+/* === Search Bar === */
+.search-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+    .search-bar input,
+    .search-bar select {
+        padding: 0.5rem 1rem;
         border-radius: 30px;
-        text-decoration: none;
-        transition: background 0.3s;
+        border: none;
+        outline: none;
     }
 
-        .home-page .explore-btn:hover {
-            background-color: #f0f0f0;
-        }
+    .search-bar button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 50%;
+    }
 
+/* === Explore Button (CTA) === */
+.project-link {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+.home-page .explore-btn {
+    background-color: white;
+    color: #0078d4;
+    font-weight: bold;
+    padding: 0.8rem 1.6rem;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+    .home-page .explore-btn:hover {
+        background-color: #f0f0f0;
+    }
+
+/* === Tool Buttons Section === */
 .tool-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -448,13 +447,7 @@ progress {
         background-color: #0056b3;
     }
 
-.social-links a {
-    margin: 0.5rem;
-    text-decoration: none;
-    color: #222;
-    font-size: 1.1rem;
-}
-
+/* === Social Links Section === */
 .social-links {
     display: flex;
     flex-wrap: wrap;
@@ -475,3 +468,23 @@ progress {
         .social-links a:hover {
             color: #007bff;
         }
+
+/* === Top Bar === */
+.top-row {
+    background-color: #1b1f23;
+    color: white;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+    .top-row .nav-link,
+    .top-row a {
+        color: white !important;
+    }
