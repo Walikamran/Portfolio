@@ -1,41 +1,69 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href=""><b>Abdul Wali</b> </a>
-    </div>
-</div>
+﻿@code {
+    private bool isPortfolioOpen = false;
+}
 
-<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
-
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+<div class="nav-scrollable">
     <nav class="nav flex-column">
 
+        <!-- Home -->
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            <NavLink class="nav-link nav-item-custom" href="" Match="NavLinkMatch.All">
+                <i class="bi bi-house-door-fill"></i>
+                <span>Home</span>
             </NavLink>
         </div>
 
+        <!-- Portfolio Toggle -->
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="portfolio">
-                <span class="nav-link-text">
-                    <i class="bi bi-people me-2 fs-5"></i>
-                    Portfolio
-                </span>
-            </NavLink>
-
+            <a @onclick="() => isPortfolioOpen = !isPortfolioOpen" class="nav-link nav-item-custom justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-people"></i>
+                    <span>Portfolio</span>
+                </div>
+                <i class="bi @(isPortfolioOpen ? "bi-chevron-up" : "bi-chevron-down")"></i>
+            </a>
         </div>
 
+        <!-- Portfolio Items -->
+        @if (isPortfolioOpen)
+        {
+            <div class="ps-5">
+                <div class="nav-item">
+                    <NavLink class="nav-link nav-item-custom" href="/portfolio">
+                        <i class="bi bi-person"></i>
+                        <span>Profile</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item">
+                    <NavLink class="nav-link nav-item-custom" href="/projects">
+                        <i class="bi bi-briefcase"></i>
+                        <span>Projects</span>
+                    </NavLink>
+                </div>
+                <div class="nav-item">
+                    <NavLink class="nav-link nav-item-custom" href="/skills">
+                        <i class="bi bi-tools"></i>
+                        <span>Skills</span>
+                    </NavLink>
+                </div>
+            </div>
+        }
+
+        <!-- Counter -->
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            <NavLink class="nav-link nav-item-custom" href="counter">
+                <i class="bi bi-plus-square-fill"></i>
+                <span>Counter</span>
             </NavLink>
         </div>
 
+        <!-- Weather -->
         <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            <NavLink class="nav-link nav-item-custom" href="weather">
+                <i class="bi bi-list-nested"></i>
+                <span>Weather</span>
             </NavLink>
         </div>
+
     </nav>
 </div>
-

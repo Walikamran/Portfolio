@@ -51,7 +51,7 @@ h1:focus {
 }
 
 body {
-    background-color: #1c2e3f;
+    background-color: #32224b;
     color: darkgray;
 }
 
@@ -487,4 +487,37 @@ progress {
     .top-row .nav-link,
     .top-row a {
         color: white !important;
+    }
+
+    /*Navmenu*/
+.nav-link {
+    transition: background-color 0.2s ease;
+}
+
+    .nav-link:hover {
+        background-color: #f8f9fa;
+        border-radius: 0.25rem;
+    }
+
+.nav-item-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+}
+
+    .nav-item-custom i {
+        font-size: 1.1rem;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-item-custom span {
+        display: inline-block;
+        line-height: 1;
+        position: relative;
+        top: 1px; /* aligns text better with icon */
     }
