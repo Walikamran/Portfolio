@@ -51,10 +51,22 @@ h1:focus {
 }
 
 body {
-    background-color: #32224b;
-    color: darkgray;
+    background-color: #81b1e1 !important;
 }
 
+.nav-profile-name {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    color: #ffffff;
+}
+
+.nav-profile-title {
+    font-size: 0.90rem;
+    margin: 0;
+    color: #dbeafe;
+    letter-spacing: 0.5px;
+}
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
     color: var(--bs-secondary-color);
@@ -149,29 +161,186 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* Vaardigheden */
-.skills-section {
+/*Vaardigheden*/
+.skills-wrapper {
+    max-width: 1100px;
+    margin: 2rem auto;
     padding: 2rem;
-    max-width: 900px;
-    margin: auto;
+    font-family: 'Segoe UI', sans-serif;
+    color: #2c3e50;
+    background: linear-gradient(135deg, #06c1e7, #ffffff);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
-.skill {
+.main-title {
+    font-size: 2.5rem;
+    text-align: center;
     margin-bottom: 1rem;
+    color: #1e3a8a;
 }
 
-    .skill label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 0.4rem;
+.intro {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.skill-card {
+    flex: 1 1 350px;
+    background: #98bb4a;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+    .skill-card:hover {
+        transform: translateY(-5px);
     }
 
-progress {
-    width: 100%;
-    height: 20px;
-    border-radius: 10px;
+    .skill-card.full {
+        flex: 1 1 100%;
+    }
+
+.card-header {
+    padding: 1rem;
+    border-radius: 12px 12px 0 0;
+    color: white;
 }
 
+    .card-header.tech {
+        background-color: #4f46e5;
+    }
+
+    .card-header.soft {
+        background-color: #22c55e;
+    }
+
+    .card-header.lang {
+        background-color: #0ea5e9;
+    }
+
+.card-body {
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.chip {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 20px;
+    font-weight: 500;
+    color: white;
+    background-color: #6b7280;
+}
+
+    .chip.tech {
+        background-color: #6366f1;
+    }
+
+    .chip.soft {
+        background-color: #16a34a;
+    }
+
+.lang-list {
+    list-style: none;
+    padding-left: 1rem;
+    color: #374151;
+}
+
+    .lang-list li {
+        margin-bottom: 0.6rem;
+        font-size: 1rem;
+    }
+
+.flag {
+    margin-right: 0.5rem;
+    font-size: 1.4rem;
+}
+
+}
+
+
+
+.submenu {
+    margin-left: 1rem;
+    list-style: none;
+    padding: 0;
+}
+
+    .submenu li {
+        padding: 0.3rem 0;
+    }
+/*Opleidingen*/
+.learning-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #06c1e7;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.page-title {
+    text-align: center;
+    color: #2c3e50;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.intro-text {
+    text-align: center;
+    color: #555;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.learning-card {
+    display: flex;
+    align-items: flex-start;
+    background-color: #98bb4a;
+    border-left: 6px solid #4e73df;
+    margin-bottom: 1.2rem;
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .learning-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+
+.card-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    color: #4e73df;
+}
+
+.card-title {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 1.3rem;
+}
+
+.card-content p {
+    margin-top: 0.3rem;
+    color: #555;
+}
+
+
+/*Hobbies*/
 .hobbies-section {
     padding: 2rem;
     max-width: 1000px;
@@ -186,7 +355,7 @@ progress {
 }
 
 .hobby-card {
-    background-color: #414446;
+    background-color: mediumpurple;
     padding: 1rem;
     flex: 1 1 250px;
     border-radius: 12px;
@@ -490,9 +659,6 @@ progress {
     }
 
     /*Navmenu*/
-.nav-link {
-    transition: background-color 0.2s ease;
-}
 
     .nav-link:hover {
         background-color: #f8f9fa;

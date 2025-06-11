@@ -1,0 +1,110 @@
+﻿@page "/vaardigheden"
+@using System.Collections.Generic
+
+<PageTitle>Vaardigheden | Abdul Wali Kamran</PageTitle>
+
+<div class="skills-wrapper">
+    <h1 class="main-title">🌟 Mijn Vaardigheden</h1>
+    <p class="intro">Een overzicht van mijn technische kennis, persoonlijke vaardigheden en taalvaardigheden, opgebouwd via studie, werk en zelfontwikkeling.</p>
+
+    <div class="skills-grid">
+        <!-- Technische Vaardigheden -->
+        <div class="skill-card">
+            <div class="card-header tech">
+                <h2>💻 Technische Vaardigheden</h2>
+            </div>
+            <div class="card-body">
+                @foreach (var skill in TechnischeVaardigheden)
+                {
+                    <span class="chip tech">@skill.Naam</span>
+                }
+            </div>
+        </div>
+
+        <!-- Soft Skills -->
+        <div class="skill-card">
+            <div class="card-header soft">
+                <h2>🧠 Soft Skills</h2>
+            </div>
+            <div class="card-body">
+                @foreach (var skill in SoftSkills)
+                {
+                    <span class="chip soft">@skill.Naam</span>
+                }
+            </div>
+        </div>
+
+        <!-- Talenkennis -->
+        <div class="skill-card full">
+            <div class="card-header lang">
+                <h2>🌐 Talenkennis</h2>
+            </div>
+            <div class="card-body">
+                <ul class="lang-list">
+                    @foreach (var taal in Talen)
+                    {
+                        <li>
+                            <span class="flag">@GetFlag(taal.Naam)</span>
+                            <strong>@taal.Naam</strong> – <span>@taal.Niveau</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    public class Vaardigheid
+    {
+        public string Naam { get; set; }
+    }
+
+    public class Taal
+    {
+        public string Naam { get; set; }
+        public string Niveau { get; set; }
+    }
+
+    List<Vaardigheid> TechnischeVaardigheden = new()
+    {
+        new() { Naam = "Blazor" },
+        new() { Naam = "C#" },
+        new() { Naam = "HTML" },
+        new() { Naam = "CSS" },
+        new() { Naam = "VMWare ESXi" },
+        new() { Naam = "Proxmox" },
+        new() { Naam = "Windows Server 2019" },
+        new() { Naam = "Raspberry Pi" },
+        new() { Naam = "Dell Wyse" },
+        new() { Naam = "Netwerkbeheer" },
+        new() { Naam = "Outlook Support" },
+        new() { Naam = "Antivirusbeheer" }
+    };
+
+    List<Vaardigheid> SoftSkills = new()
+    {
+        new() { Naam = "Zelfstandig" },
+        new() { Naam = "Nauwkeurig" },
+        new() { Naam = "Flexibel" },
+        new() { Naam = "Stressbestendig" },
+        new() { Naam = "Doorzetter" },
+        new() { Naam = "Leergierig" },
+        new() { Naam = "Betrouwbaar" }
+    };
+
+    List<Taal> Talen = new()
+    {
+        new() { Naam = "Pashto / Dari", Niveau = "Moedertaal" },
+        new() { Naam = "Nederlands", Niveau = "B2 – Gevorderd" },
+        new() { Naam = "Engels", Niveau = "B1 – Basis" }
+    };
+
+    string GetFlag(string taal)
+    {
+        if (taal.Contains("Nederlands")) return "🇳🇱";
+        if (taal.Contains("Engels")) return "🇬🇧";
+        if (taal.Contains("Pashto") || taal.Contains("Dari")) return "🇦🇫";
+        return "🌍";
+    }
+}

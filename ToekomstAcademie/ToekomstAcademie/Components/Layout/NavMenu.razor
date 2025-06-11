@@ -1,8 +1,17 @@
-﻿@code {
+﻿
+
+@code {
     private bool isPortfolioOpen = false;
 }
 
 <div class="nav-scrollable">
+    <!-- Profile Header -->
+    <!-- Profile Header -->
+    <div class="nav-profile-header text-center py-4">
+        <h2 class="nav-profile-name">Abdul Wali Kamran</h2>
+        <p class="nav-profile-title">ICT Student</p>
+    </div>
+
     <nav class="nav flex-column">
 
         <!-- Home -->
@@ -34,16 +43,25 @@
                         <span>Profile</span>
                     </NavLink>
                 </div>
+
+                <div class="nav-item">
+                    <NavLink class="nav-link nav-item-custom" href="/vaardigheden/leertrajecten">
+                        <i class="bi bi-mortarboard-fill"></i>
+                        <span>Leertrajecten</span>
+                    </NavLink>
+                </div>
+
+                <div class="nav-item">
+                    <NavLink class="nav-link nav-item-custom" href="/vaardigheden">
+                        <i class="bi bi-tools"></i>
+                        <span>Vaardigheden</span>
+                    </NavLink>
+                </div>
+
                 <div class="nav-item">
                     <NavLink class="nav-link nav-item-custom" href="/projects">
                         <i class="bi bi-briefcase"></i>
                         <span>Projects</span>
-                    </NavLink>
-                </div>
-                <div class="nav-item">
-                    <NavLink class="nav-link nav-item-custom" href="/skills">
-                        <i class="bi bi-tools"></i>
-                        <span>Skills</span>
                     </NavLink>
                 </div>
             </div>
