@@ -50,8 +50,8 @@ h1:focus {
     border-color: #929292;
 }
 
-body {
-    background-color: #81b1e1 !important;
+.mybody {
+    background-color: #81b1e1;
 }
 
 .nav-profile-name {
@@ -131,8 +131,8 @@ body {
         margin-bottom: 1rem;
     }
 
-.btn {
-    background-color: #084e2e !important;
+.mybtn {
+    background-color: #084e2e;
     color: white;
     padding: 0.6rem 1.4rem;
     border-radius: 24px;
@@ -609,19 +609,22 @@ body {
     font-family: 'Segoe UI', sans-serif;
     color: #fff;
 }
-
-    /* === Hero Section === */
-    .home-page .hero-section {
-        background-image: url('images/bg.jpg');
-        background-size: cover;
-        background-position: center;
-        padding: 10rem 2rem 4rem;
-        text-align: center;
-        min-height: 90vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+/*Search result*/
+.project-results{
+    color: black;
+}
+/* === Hero Section === */
+.home-page .hero-section {
+    background-image: url('images/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 10rem 2rem 4rem;
+    text-align: center;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
     .home-page .hero-text h1 {
         font-size: 2.5rem;
@@ -741,7 +744,7 @@ body {
 
     .top-row .nav-link,
     .top-row a {
-        color: white !important;
+        color: white;
     }
 
     /*Navmenu*/

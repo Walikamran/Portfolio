@@ -11,7 +11,7 @@
                 <input type="text" placeholder="Zoek project, technologie" @bind="searchTerm" />
                 <select>
                     <option>Categorie</option>
-                    <!-- Add real categories if needed -->
+               
                 </select>
                 <button><i class="bi bi-search"></i></button>
             </div>
@@ -20,7 +20,9 @@
             <div class="project-results" style="margin-top: 2rem;">
                 @if (filteredProjects.Count == 0 && !string.IsNullOrWhiteSpace(searchTerm))
                 {
-                    <p>Geen resultaten gevonden.</p>
+                    <div class="project-card">
+                        <p>Geen resultaten gevonden</p>
+                    </div>
                 }
                 else
                 {
