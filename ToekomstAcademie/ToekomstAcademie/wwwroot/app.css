@@ -51,7 +51,7 @@ h1:focus {
 }
 
 .mybody {
-    background-color: #81b1e1;
+    background-color: slategrey;
 }
 
 .nav-profile-name {
@@ -776,3 +776,27 @@ h1:focus {
         position: relative;
         top: 1px; 
     }
+
+    /* === Dashboard === */
+
+.dashboard {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.task-column {
+    width: 30%;
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.task-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+}

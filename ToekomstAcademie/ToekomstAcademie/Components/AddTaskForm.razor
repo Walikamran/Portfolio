@@ -1,0 +1,19 @@
+﻿@using ToekomstAcademie.Models
+
+<EditForm Model="NewTask" OnValidSubmit="HandleValidSubmit">
+    <InputText @bind-Value="NewTask.Titel" placeholder="Titel" />
+    <InputTextArea @bind-Value="NewTask.Beschrijving" placeholder="Beschrijving" />
+    <InputDate @bind-Value="NewTask.Deadline" />
+    <button type="submit">Voeg toe</button>
+</EditForm>
+
+@code {
+    private MaintenanceTask NewTask = new() { Status = "ToDo", Deadline = DateTime.Today };
+    [Parameter] public EventCallback<MaintenanceTask> OnTaskAdded { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        await OnTaskAdded.InvokeAsync(NewTask);
+        NewTask = new() { Status = "ToDo", Deadline = DateTime.Today };
+    }
+}

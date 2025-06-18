@@ -28,7 +28,7 @@
                                 <span>@tech</span>
                             }
                         </div>
-                        <div class="project-links">
+                        <div class="project-links d-flex flex-wrap gap-2 mt-3">
                             @if (!string.IsNullOrEmpty(project.LiveUrl))
                             {
                                 <a href="@project.LiveUrl" target="_blank" class="btn btn-primary">
@@ -41,7 +41,15 @@
                                     <i class="fab fa-github"></i> View Code
                                 </a>
                             }
+
+                            @if (project.Title == "Dashboard")
+                            {
+                                <a href="/dashboard" class="btn btn-success">
+                                    <i class="bi bi-speedometer2"></i> Open Dashboard
+                                </a>
+                            }
                         </div>
+
                     </div>
                 </div>
             }
@@ -59,12 +67,12 @@
             Description = "Pi-hole is een open-source netwerktool die fungeert als een advertentie- en trackerblocker op netwerk-niveau. Het wordt vaak geïnstalleerd op een Raspberry Pi, maar kan ook op andere Linux-systemen draaien..",
             ImageUrl = "/images/pi.png",
             Technologies = new List<string> { "Raspberry-Pi", "Hyper-V", ".Ubunto server", "SQL Server" },
-            LiveUrl = "https://pi-hole.net/blog/2018/01/13/pi-hole-web-interface-the-next-generation/#page-content",
             CodeUrl = "https://github.com/yourusername/ecommerce-platform"
+
         },
         new Project
         {
-            Title = "Dashboard-app voor taakbeheer",
+            Title = "Dashboard",
             Category = "Web Application",
             Description = "Productiviteitsapplicatie voor teamsamenwerking en taakregistratie.",
             ImageUrl = "/images/db.png",

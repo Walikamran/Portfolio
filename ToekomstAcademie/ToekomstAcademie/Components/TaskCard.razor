@@ -1,0 +1,27 @@
+﻿@using ToekomstAcademie.Models
+
+<div class="task-card">
+    <h3>@Task.Titel</h3>
+    <p>@Task.Beschrijving</p>
+    <p><strong>Deadline:</strong> @Task.Deadline.ToShortDateString()</p>
+    <select @onchange="OnStatusChange">
+        <option value="ToDo" selected="@IsSelected("ToDo")">To Do</option>
+        <option value="InProgress" selected="@IsSelected("InProgress")">Bezig</option>
+        <option value="Done" selected="@IsSelected("Done")">Voltooid</option>
+    </select>
+    <button @onclick="() => OnDelete.InvokeAsync(Task)">Verwijderen</button>
+</div>
+
+@code {
+    [Parameter] public MaintenanceTask Task { get; set; }
+    [Parameter] public EventCallback<MaintenanceTask> OnDelete { get; set; }
+    [Parameter] public EventCallback<(MaintenanceTask, string)> OnStatusChanged { get; set; }
+
+    private async Task OnStatusChange(ChangeEventArgs e)
+    {
+        var newStatus = e.Value.ToString();
+        await OnStatusChanged.InvokeAsync((Task, newStatus));
+    }
+
+    private bool IsSelected(string status) => Task.Status == status;
+}
