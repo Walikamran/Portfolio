@@ -45,13 +45,13 @@ h1:focus {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
-
+    
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
 
-.mybody {
-    background-color: slategrey;
+body {
+    background: linear-gradient(319deg, var(--bs-primary-text-emphasis) 0%, #4f0228 70%);
 }
 
 .nav-profile-name {
@@ -729,7 +729,7 @@ h1:focus {
 
 /* === Top Bar === */
 .top-row {
-    background-color: #1b1f23;
+    background: linear-gradient(319deg, var(--bs-info-text-emphasis) 0% 0%, #766013 70%);
     color: white;
     height: 3.5rem;
     display: flex;
@@ -788,13 +788,13 @@ h1:focus {
 
 .task-column {
     width: 30%;
-    background-color: #f9f9f9;
+    background-color: #ab9620;
     padding: 1rem;
     border-radius: 10px;
 }
 
 .task-card {
-    background-color: #fff;
+    background-color: #0a58ca;
     border: 1px solid #ddd;
     padding: 1rem;
     margin-bottom: 1rem;
