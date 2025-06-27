@@ -613,18 +613,90 @@ body {
 .project-results{
     color: black;
 }
-/* === Hero Section === */
 .home-page .hero-section {
-    background-image: url('images/bg.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 10rem 2rem 4rem;
-    text-align: center;
-    min-height: 90vh;
+    background: linear-gradient(319deg, var(--bs-primary-text-emphasis) 0%, #4f0228 70%);
+    color: #fff;
+    padding: 6rem 2rem;
+    min-height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    position: relative;
+    overflow: hidden;
 }
+
+/* Decorative floating blobs */
+.hero-section::before,
+.hero-section::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, #ffffff22, transparent 70%);
+    z-index: 0;
+    animation: float 12s ease-in-out infinite;
+}
+
+.hero-section::before {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -150px;
+}
+
+.hero-section::after {
+    width: 300px;
+    height: 300px;
+    bottom: -100px;
+    right: -100px;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+/* Content styling */
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    z-index: 1;
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    z-index: 1;
+    color: #ddd;
+}
+
+.hero-section .btn-primary {
+    background: #4f46e5;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    border: none;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    z-index: 1;
+    transition: background 0.3s ease;
+}
+
+    .hero-section .btn-primary:hover {
+        background: #4338ca;
+    }
+
 
     .home-page .hero-text h1 {
         font-size: 2.5rem;
