@@ -761,80 +761,59 @@ body {
     /*Extra*/
 /* NAVIGATION BAR */
 .navbar {
-    background: linear-gradient(63deg, var(--bs-blue) 0%, var(--bs-warning) 70%);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    position: relative;
+    background: linear-gradient(to right, #3c02a7, #511017);
+    padding: 10px 30px;
+    height: 60px;
 }
 
-.nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: auto;
+/* LOGO LINKS */
+.logo-wrapper {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .logo-img {
-    height: 45px;
-    width: auto;
-    border-radius: 12px; /* Maakt de hoeken rond */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Zachte schaduw */
-    object-fit: cover;
+    height: 48px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     transition: transform 0.3s ease;
 }
 
     .logo-img:hover {
-        transform: scale(1.05); 
+        transform: scale(1.05);
     }
 
+/* NAV LINKS IN MIDDEN */
 .nav-links {
-    list-style: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
+    list-style: none;
     margin: 0;
     padding: 0;
 }
 
     .nav-links a {
         text-decoration: none;
-        color: #333;
         font-weight: 500;
-        position: relative;
+        color: white;
+        transition: color 0.3s ease;
     }
 
-        .nav-links a::after {
-            content: "";
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: #2575fc;
-            transition: width 0.3s ease;
+        .nav-links a:hover {
+            color: white;
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-@media (max-width: 768px) {
-    .nav-links {
-        flex-direction: column;
-        background-color: white;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        width: 200px;
-        display: none; /* voor uitbreiding met menu-toggle */
-    }
-}
 
 /* === Top Bar === */
 .top-row {
-    background: linear-gradient(319deg, var(--bs-info-text-emphasis) 0% 0%, #766013 70%);
+    background: linear-gradient(to right, #0057b7, #ffd700);
     color: white;
     height: 3.5rem;
     display: flex;
