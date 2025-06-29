@@ -15,10 +15,10 @@
     <div class="about-container">
         <img src="images/w.jpg" alt="Avatar" class="avatar" />
         <div class="about-text">
-            <h4>Wie ben ik?</h4>
+            <h4>Even voorstellen</h4>
             <h2>Over Mij</h2>
             <p>
-                Ik ben een leergierige en nauwkeurige student met een sterke passie voor ICT. 
+                Ik ben een leergierige en nauwkeurige student met een sterke passie voor ICT.
                 Door mijn vermogen om snel nieuwe vaardigheden op te pikken en onder druk te presteren, werk ik graag zelfstandig aan technische oplossingen.
             </p>
         </div>
@@ -29,14 +29,18 @@
 <section class="project-section" id="projects">
     <h2 class="section-title">🔍 Zoek projecten & technologieën</h2>
     <div class="search-bar">
-        <input type="text" placeholder="Zoek project of technologie..." @bind="searchTerm" />
-        <button class="search-btn"><i class="bi bi-search"></i> Zoeken</button>
-        <NavLink class="nav-link d-flex align-items-center" href="/energieverbruik" Match="NavLinkMatch.All" title="Bekijk je energieverbruik">
-            <span class="me-2" style="font-size:1.2rem;">⚡</span> Energieverbruik
-        </NavLink>
-
-
+        <label for="project-search" class="visually-hidden">Zoek projecten</label>
+        <input id="project-search" type="text" placeholder="Zoek project of technologie..."
+               @bind="searchTerm" @onkeydown="HandleKeyDown" />
+        <button class="search-btn" @onclick="TriggerSearch">
+            <i class="bi bi-search"></i> Zoeken
+        </button>
     </div>
+
+    <NavLink class="nav-link d-flex align-items-center" href="/energieverbruik"
+             title="Bekijk je energieverbruik">
+        <span class="me-2" style="font-size:1.2rem;">⚡</span> Energieverbruik
+    </NavLink>
 
     <!-- Resultaten -->
     <div class="project-results">
@@ -51,7 +55,7 @@
                 <div class="project-card">
                     <h3>@project.Title</h3>
                     <p>@project.Description</p>
-                    <a href="/projects/@project.Id" class="project-link-btn">📁 Bekijk</a>
+                    <a href="@project.Link" class="project-link-btn">📁 Bekijk</a>
                 </div>
             }
         }
@@ -74,11 +78,37 @@
     private string searchTerm = "";
 
     private List<Project> allProjects = new()
+{
+    new Project
     {
-        new Project { Id = 1, Title = "Pi-Hole", Description = "Open-source adblocker voor je hele netwerk met Raspberry Pi." },
-        new Project { Id = 2, Title = "Energie App", Description = "Realtime monitoring van energieverbruik." },
-        new Project { Id = 3, Title = "Waterbeheer Systeem", Description = "Slim waterbeheer met IoT-sensoren." }
-    };
+        Id = 1,
+        Title = "Pi-Hole",
+        Description = "Open-source adblocker voor je hele netwerk met Raspberry Pi.",
+        Link = "/projects"
+    },
+    new Project
+    {
+        Id = 2,
+        Title = "Dashboard",
+        Description = "Productiviteitsapplicatie voor teamsamenwerking en taakregistratie.",
+        Link = "/dashboard"
+    },
+    new Project
+    {
+        Id = 3,
+        Title = "Portfolio Website",
+        Description = "PrivePortfolio-website gecreëerd met Blazor.",
+        Link = "/projects"
+    },
+    new Project
+    {
+        Id = 4,
+        Title = "Energieverbruik",
+        Description = "Realtime monitoring van energieverbruik.",
+        Link = "/energieverbruik"
+    }
+};
+
 
     private List<Project> filteredProjects => string.IsNullOrWhiteSpace(searchTerm)
         ? allProjects
@@ -87,10 +117,24 @@
             p.Description.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
         ).ToList();
 
+    private void HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            StateHasChanged(); // Vernieuwt resultaten
+        }
+    }
+
+    private void TriggerSearch()
+    {
+        StateHasChanged(); // Forceert refresh van zoekresultaten
+    }
+
     public class Project
     {
         public int Id { get; set; }
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
+        public string Link { get; set; } = ""; // nieuwe link-property
     }
 }

@@ -1,0 +1,72 @@
+﻿@page "/leermiddelen"
+
+<div class="leermiddelen-container p-4">
+    <h1 class="mb-4">Leermiddelen & Bronnen</h1>
+
+    <input type="text" placeholder="Zoek leermiddel..." @bind="searchTerm" class="form-control mb-3" />
+
+    @if (FilteredLeermiddelen.Any())
+    {
+        <div class="list-group">
+            @foreach (var item in FilteredLeermiddelen)
+            {
+                <a href="@item.Url" target="_blank" class="list-group-item list-group-item-action flex-column align-items-start mb-2">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">@item.Titel</h5>
+                        <small class="badge bg-primary">@item.Type</small>
+                    </div>
+                    <p class="mb-1">@item.Omschrijving</p>
+                    <small class="text-muted">@item.Url</small>
+                </a>
+            }
+        </div>
+    }
+    else
+    {
+        <p>Geen leermiddelen gevonden.</p>
+    }
+</div>
+
+@code {
+    private string searchTerm = "";
+
+    private List<Leermiddel> leermiddelen = new()
+    {
+        new Leermiddel
+        {
+            Titel = "Blazor officiële documentatie",
+            Omschrijving = "De officiële Microsoft documentatie voor Blazor.",
+            Url = "https://learn.microsoft.com/en-us/aspnet/core/blazor",
+            Type = "Website"
+        },
+        new Leermiddel
+        {
+            Titel = "Blazor Tutorial YouTube-serie",
+            Omschrijving = "Een uitgebreide tutorial serie over Blazor.",
+            Url = "https://www.youtube.com/watch?v=dY_AWdCzsCY&list=PLzewa6pjbr3IQEUfNiK2SROQC1NuKl6PV",
+            Type = "Video"
+        },
+        new Leermiddel
+        {
+            Titel = "Blazor boek: Blazor in Action",
+            Omschrijving = "Een diepgaand boek over Blazor development.",
+            Url = "https://www.w3schools.com/cs/index.php",
+            Type = "Boek"
+        },
+    };
+
+    private IEnumerable<Leermiddel> FilteredLeermiddelen =>
+        string.IsNullOrWhiteSpace(searchTerm)
+        ? leermiddelen
+        : leermiddelen.Where(l => l.Titel.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                               || l.Omschrijving.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)
+                               || l.Type.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    private class Leermiddel
+    {
+        public string Titel { get; set; } = "";
+        public string Omschrijving { get; set; } = "";
+        public string Url { get; set; } = "";
+        public string Type { get; set; } = "";
+    }
+}

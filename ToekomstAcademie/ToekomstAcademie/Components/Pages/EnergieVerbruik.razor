@@ -1,236 +1,41 @@
 ﻿@page "/energieverbruik"
+@inherits EnergieverbruikBase
 
-<h2 class="energie-title">⚡ Energieverbruik Monitor</h2>
-
-<div class="energie-container">
-    <div class="energie-box @StatusClass">
-        <h3>Huidig Verbruik</h3>
-        <p class="waarde">@HuidigVerbruik.ToString("0.00") kWh</p>
-        <p class="status">@StatusText</p>
-        <p class="timestamp">Laatst bijgewerkt: @LaatsteUpdate.ToString("HH:mm:ss")</p>
-        <button class="refresh-button" @onclick="VernieuwVerbruik">🔄 Vernieuw</button>
-        <button class="clear-button" @onclick="WisHistoriek">🗑 Wis geschiedenis</button>
-    </div>
-
-    <div class="historiek-box">
-        <h4>📊 Vorige metingen (Laatste 10)</h4>
-        <ul>
-            @foreach (var waarde in VerbruikHistoriek)
-            {
-                <li>@waarde.Verbruik.ToString("0.00") kWh</li>
-            }
-        </ul>
-    </div>
-
-    <div class="dagelijks-overzicht">
-        <h4>📅 Dagelijks Overzicht (Laatste 7 dagen)</h4>
-        @if (DagelijksVerbruik.Count == 0)
-        {
-            <p>Geen data beschikbaar.</p>
-        }
-        else
-        {
-            <table class="overzicht-tabel">
-                <thead>
-                    <tr>
-                        <th>Dag</th>
-                        <th>Gemiddeld Verbruik (kWh)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var entry in DagelijksVerbruik)
-                    {
-                        <tr>
-                            <td>@entry.Key.ToString("dd MMM yyyy")</td>
-                            <td>@entry.Value.ToString("0.00")</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        }
-    </div>
+<div class="header">
+    <img src="images/house-illustration.png" alt="House" class="house-image" />
 </div>
 
-<style>
-    .energie-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    .energie-box, .historiek-box, .dagelijks-overzicht {
-        background: #f9f9f9;
-        padding: 1.5rem;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
-        flex: 1 1 300px;
-        min-width: 280px;
-    }
-
-    .laag {
-        background-color: #d0f0c0;
-    }
-    /* lichtgroen */
-    .normaal {
-        background-color: #fff4b1;
-    }
-    /* lichtgeel */
-    .hoog {
-        background-color: #f8c1c1;
-    }
-    /* lichtrood */
-    .waarde {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 0.2rem;
-    }
-
-    .refresh-button, .clear-button {
-        margin-right: 0.5rem;
-        padding: 0.5rem 1rem;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 1rem;
-        transition: background-color 0.3s;
-        user-select: none;
-    }
-
-    .refresh-button {
-        background-color: #0078d4;
-        color: white;
-    }
-
-        .refresh-button:hover {
-            background-color: #005a9e;
-        }
-
-    .clear-button {
-        background-color: #d9534f;
-        color: white;
-    }
-
-        .clear-button:hover {
-            background-color: #b52b27;
-        }
-
-    .overzicht-tabel {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-    }
-
-        .overzicht-tabel th, .overzicht-tabel td {
-            border: 1px solid #ddd;
-            padding: 0.75rem 1rem;
-            text-align: left;
-        }
-
-        .overzicht-tabel th {
-            background-color: #f2f2f2;
-        }
-
-    .energie-title {
-        font-weight: 700;
-        margin-bottom: 1.5rem;
-        font-size: 2rem;
-    }
-
-    .status {
-        font-size: 1.1rem;
-        margin-bottom: 0.8rem;
-    }
-
-    .timestamp {
-        font-size: 0.9rem;
-        color: #555;
-        margin-bottom: 1rem;
-    }
-</style>
-
-@code {
-    // Huidig verbruik in kWh
-    private double HuidigVerbruik = 0;
-
-    // Historiek van verbruik, met timestamp
-    private List<(DateTime Timestamp, double Verbruik)> VerbruikHistoriek = new();
-
-    private DateTime LaatsteUpdate = DateTime.Now;
-
-    private Random random = new();
-
-    // Status tekst op basis van huidig verbruik
-    private string StatusText
-    {
-        get
-        {
-            if (HuidigVerbruik < 1)
-                return "🔋 Laag verbruik";
-            else if (HuidigVerbruik < 3)
-                return "⚙️ Normaal verbruik";
-            else
-                return "🔥 Hoog verbruik";
-        }
-    }
-
-    // CSS klasse op basis van huidig verbruik
-    private string StatusClass
-    {
-        get
-        {
-            if (HuidigVerbruik < 1)
-                return "laag";
-            else if (HuidigVerbruik < 3)
-                return "normaal";
-            else
-                return "hoog";
-        }
-    }
-
-    // Bereken het gemiddeld verbruik per dag voor de laatste 7 dagen
-    private Dictionary<DateTime, double> DagelijksVerbruik
-    {
-        get
-        {
-            return VerbruikHistoriek
-                .GroupBy(v => v.Timestamp.Date)
-                .OrderByDescending(g => g.Key)
-                .Take(7)
-                .ToDictionary(
-                    g => g.Key,
-                    g => g.Average(x => x.Verbruik)
-                );
-        }
-    }
-
-    protected override void OnInitialized()
-    {
-        // Vul de historie alvast met wat voorbeelddata (optioneel)
-        for (int i = 0; i < 10; i++)
-        {
-            VernieuwVerbruik();
-        }
-    }
-
-    // Vernieuw huidig verbruik met een random waarde
-    private void VernieuwVerbruik()
-    {
-        HuidigVerbruik = Math.Round(random.NextDouble() * 5, 2);
-        LaatsteUpdate = DateTime.Now;
-
-        VerbruikHistoriek.Insert(0, (LaatsteUpdate, HuidigVerbruik));
-
-        // Beperk historie tot max 50 items
-        if (VerbruikHistoriek.Count > 50)
-            VerbruikHistoriek.RemoveAt(VerbruikHistoriek.Count - 1);
-    }
-
-    // Wis alle geschiedenis
-    private void WisHistoriek()
-    {
-        VerbruikHistoriek.Clear();
-        HuidigVerbruik = 0;
-        LaatsteUpdate = DateTime.Now;
-    }
-}
+<div class="grid">
+    <div class="tile" @onclick="VernieuwVerbruik">
+        <p class="value">@PrijsPerUur.ToString("0.00") cent</p>
+        <p class="label">13.00 - 14.00</p>
+    </div>
+    <div class="tile">
+        <p class="value">@TotaleKosten.ToString("0.00") €</p>
+        <p class="label">Kosten tot nu toe</p>
+    </div>
+    <div class="tile">
+        <p class="value">@HuidigVerbruik.ToString("0.00") W</p>
+        <p class="label">Huidig verbruik</p>
+    </div>
+    <div class="tile clickable" @onclick="OpenZaptecGo">
+        <p class="icon">🔌</p>
+        <p class="label">Zaptec Go</p>
+    </div>
+    <div class="tile">
+        <p class="value">21 °C</p>
+        <p class="label">Kelder</p>
+    </div>
+    <div class="tile clickable" @onclick="VerdienTegoed">
+        <p class="icon">🎁</p>
+        <p class="label">Verdien tegoed</p>
+    </div>
+    <div class="tile clickable" @onclick="OpenStore">
+        <p class="icon">🛒</p>
+        <p class="label">Store</p>
+    </div>
+    <div class="tile clickable" @onclick="VoegToe">
+        <p class="icon">➕</p>
+        <p class="label">Toevoegen</p>
+    </div>
+</div>
