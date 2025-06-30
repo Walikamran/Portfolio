@@ -1,63 +1,128 @@
 ﻿@page "/weather"
+@inject WeatherService WeatherService
 
-<PageTitle>Weather</PageTitle>
+<div class="max-w-4xl mx-auto p-6 font-sans bg-gray-50 min-h-screen">
 
-<h1>Weather</h1>
+    <h1 class="text-4xl font-extrabold mb-8 text-center text-blue-700">🌤️ Weer & Nieuws</h1>
 
-<p>This component demonstrates showing data.</p>
+    <div class="mb-6 flex justify-center">
+        <input @bind="LocationInput" placeholder="Voer locatie in..." 
+               class="border border-gray-300 rounded-md p-2 w-72 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <button class="ml-3 bg-blue-600 text-white px-4 rounded-md hover:bg-blue-700"
+                @onclick="OnSearch">Zoek</button>
+    </div>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Farenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+    @if (IsLoading)
+    {
+        <p class="text-center text-gray-600">Laden...</p>
+    }
+    else if (CurrentWeather == null)
+    {
+        <p class="text-center text-red-600">Weergegevens niet gevonden voor "@LocationInput".</p>
+    }
+    else
+    {
+        <section class="bg-white rounded-lg shadow p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-3xl font-bold">@CurrentWeather.Location</h2>
+                    <p class="text-gray-500 text-sm">Laatst bijgewerkt: @CurrentWeather.Updated.ToString("HH:mm")</p>
+                </div>
+                <img src="@GetWeatherIcon(CurrentWeather.ConditionCode)" alt="Weer icoon" class="w-20 h-20" />
+            </div>
+
+            <div class="flex items-center space-x-10 mb-4">
+                <div class="text-6xl font-bold text-yellow-500">@CurrentWeather.Temperature°C</div>
+                <div class="space-y-1">
+                    <p><strong>Gevoelstemperatuur:</strong> @CurrentWeather.FeelsLike°C</p>
+                    <p><strong>Vochtigheid:</strong> @CurrentWeather.Humidity%</p>
+                    <p><strong>Wind:</strong> @CurrentWeather.WindSpeed km/u</p>
+                    <p><strong>Zonsopgang:</strong> @CurrentWeather.Sunrise.ToLocalTime().ToString("HH:mm")</p>
+                    <p><strong>Zonsondergang:</strong> @CurrentWeather.Sunset.ToLocalTime().ToString("HH:mm")</p>
+                </div>
+            </div>
+
+            <p class="italic text-gray-700">"@CurrentWeather.Condition"</p>
+        </section>
+
+        <section class="mb-8">
+            <h3 class="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">3-daagse voorspelling</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach(var day in Forecast)
+                {
+                    <div class="bg-white rounded-lg shadow p-4 text-center">
+                        <p class="font-semibold">@day.Date.ToString("ddd dd MMM")</p>
+                        <img src="@GetWeatherIcon(day.ConditionCode)" alt="Weer icoon" class="mx-auto w-12 h-12" />
+                        <p>Max: @day.TempMax°C</p>
+                        <p>Min: @day.TempMin°C</p>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section>
+            <h3 class="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">Laatste weernieuws</h3>
+            <ul class="space-y-4">
+                @foreach(var article in CurrentWeather.News)
+                {
+                    <li>
+                        <a href="@article.Url" target="_blank" class="text-blue-600 hover:underline font-medium">
+                            @article.Title
+                        </a>
+                        <div class="text-sm text-gray-500">@article.Published.ToString("dd MMM yyyy")</div>
+                    </li>
+                }
+            </ul>
+        </section>
+    }
+</div>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private string LocationInput = "Steenwijk";
+    private WeatherData? CurrentWeather;
+    private List<WeatherForecastDay> Forecast = new();
+    private bool IsLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
-        // Simulate asynchronous loading to demonstrate a loading indicator
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-        {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+        await LoadWeather(LocationInput);
     }
 
-    private class WeatherForecast
+    private async Task OnSearch()
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        await LoadWeather(LocationInput);
+    }
+
+    private async Task LoadWeather(string location)
+    {
+        IsLoading = true;
+        StateHasChanged();
+
+        CurrentWeather = await WeatherService.GetWeatherAsync(location);
+        if (CurrentWeather != null)
+        {
+            Forecast = await WeatherService.GetForecastAsync(location);
+        }
+        else
+        {
+            Forecast.Clear();
+        }
+
+        IsLoading = false;
+        StateHasChanged();
+    }
+
+    private string GetWeatherIcon(string code)
+    {
+        return code.ToLower() switch
+        {
+            "clear" => "https://openweathermap.org/img/wn/01d@2x.png",
+            "clouds" => "https://openweathermap.org/img/wn/03d@2x.png",
+            "rain" => "https://openweathermap.org/img/wn/09d@2x.png",
+            "thunderstorm" => "https://openweathermap.org/img/wn/11d@2x.png",
+            "snow" => "https://openweathermap.org/img/wn/13d@2x.png",
+            "mist" => "https://openweathermap.org/img/wn/50d@2x.png",
+            _ => "https://openweathermap.org/img/wn/01d@2x.png"
+        };
     }
 }
