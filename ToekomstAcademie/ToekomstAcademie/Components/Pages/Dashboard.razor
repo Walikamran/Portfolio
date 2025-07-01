@@ -1,62 +1,103 @@
 ﻿@page "/dashboard"
+@using ChartJs.Blazor.PieChart
 @using ToekomstAcademie.Models
 @inject ToekomstAcademie.Services.TaskService TaskService
 
 <h1>🛠️ Onderhoud & Taakbeheer</h1>
 
 <div class="dashboard">
-    <div class="task-column">
-        <h2>📋 Te Doen</h2>
-        @foreach (var task in Tasks.Where(t => t.Status == "ToDo"))
-        {
-            <TaskCard Task="task" OnStatusChanged="UpdateTaskStatus" OnDelete="DeleteTask" />
-        }
-    </div>
+	<div class="task-column">
+		<h2>📋 Te Doen</h2>
+		@foreach (var task in Tasks.Where(t => t.Status == "ToDo"))
+		{
+			<TaskCard Task="task" OnStatusChanged="UpdateTaskStatus" OnDelete="DeleteTask" />
+		}
+	</div>
 
-    <div class="task-column">
-        <h2>⚙️ Bezig</h2>
-        @foreach (var task in Tasks.Where(t => t.Status == "InProgress"))
-        {
-            <TaskCard Task="task" OnStatusChanged="UpdateTaskStatus" OnDelete="DeleteTask" />
-        }
-    </div>
+	<div class="task-column">
+		<h2>⚙️ Bezig</h2>
+		@foreach (var task in Tasks.Where(t => t.Status == "InProgress"))
+		{
+			<TaskCard Task="task" OnStatusChanged="UpdateTaskStatus" OnDelete="DeleteTask" />
+		}
+	</div>
 
-    <div class="task-column">
-        <h2>✅ Voltooid</h2>
-        @foreach (var task in Tasks.Where(t => t.Status == "Done"))
-        {
-            <TaskCard Task="task" OnStatusChanged="UpdateTaskStatus" OnDelete="DeleteTask" />
-        }
-    </div>
+	<div class="task-column">
+		<h2>✅ Voltooid</h2>
+		@foreach (var task in Tasks.Where(t => t.Status == "Done"))
+		{
+			<TaskCard Task="task" OnStatusChanged="UpdateTaskStatus" OnDelete="DeleteTask" />
+		}
+	</div>
 </div>
 
 <AddTaskForm OnTaskAdded="AddNewTask" />
+<Chart Config="_config"></Chart>
 
 @code {
-    private List<MaintenanceTask> Tasks = new();
+	private List<MaintenanceTask> Tasks = new();
 
-    protected override async Task OnInitializedAsync()
-    {
-        Tasks = await TaskService.GetTasksAsync();
-    }
 
-    private async Task UpdateTaskStatus((MaintenanceTask, string) update)
-    {
-        var (task, newStatus) = update;
-        task.Status = newStatus;
-        await TaskService.UpdateTaskAsync(task);
-        Tasks = await TaskService.GetTasksAsync();
-    }
 
-    private async Task DeleteTask(MaintenanceTask task)
-    {
-        await TaskService.DeleteTaskAsync(task.Id);
-        Tasks = await TaskService.GetTasksAsync();
-    }
+	private PieConfig _config;
 
-    private async Task AddNewTask(MaintenanceTask newTask)
-    {
-        await TaskService.AddTaskAsync(newTask);
-        Tasks = await TaskService.GetTasksAsync();
-    }
+	protected override void OnInitialized()
+	{
+		_config = new PieConfig
+		{
+			Options = new PieOptions
+			{
+				Responsive = true,
+				Title = new OptionsTitle
+				{
+					Display = true,
+					Text = "ChartJs.Blazor Pie Chart"
+				}
+			}
+		};
+
+		foreach (string color in new[] { "Red", "Yellow", "Green", "Blue" })
+		{
+			_config.Data.Labels.Add(color);
+		}
+
+		PieDataset<int> dataset = new PieDataset<int>(new[] { 6, 5, 3, 7 })
+		{
+			BackgroundColor = new[]
+			{
+			ColorUtil.ColorHexString(255, 99, 132), // Slice 1 aka "Red"
+            ColorUtil.ColorHexString(255, 205, 86), // Slice 2 aka "Yellow"
+            ColorUtil.ColorHexString(75, 192, 192), // Slice 3 aka "Green"
+            ColorUtil.ColorHexString(54, 162, 235), // Slice 4 aka "Blue"
+			}
+		};
+
+		_config.Data.Datasets.Add(dataset);
+	}
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		Tasks = await TaskService.GetTasksAsync();
+	}
+
+	private async Task UpdateTaskStatus((MaintenanceTask, string) update)
+	{
+		var (task, newStatus) = update;
+		task.Status = newStatus;
+		await TaskService.UpdateTaskAsync(task);
+		Tasks = await TaskService.GetTasksAsync();
+	}
+
+	private async Task DeleteTask(MaintenanceTask task)
+	{
+		await TaskService.DeleteTaskAsync(task.Id);
+		Tasks = await TaskService.GetTasksAsync();
+	}
+
+	private async Task AddNewTask(MaintenanceTask newTask)
+	{
+		await TaskService.AddTaskAsync(newTask);
+		Tasks = await TaskService.GetTasksAsync();
+	}
 }
