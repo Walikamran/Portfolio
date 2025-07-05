@@ -145,7 +145,23 @@ h1:focus {
         background-color: #16325c;
     }
 
-.about-section,
+.about-section {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #9b7d27; 
+}
+
+.about-section p {
+    text-align: justify;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+}
+
+.about-section h1 {
+    text-align: justify; 
+}
+
 .hobbies-section,
 .footer {
     padding: 3rem 2rem;
@@ -1001,3 +1017,38 @@ body {
         color: rgba(255,255,255,0.7);
     }
      
+    /* === Het weer === */
+.weather-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.location-selector {
+    display: flex;
+    gap: 10px;
+}
+
+    .location-selector input {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+
+.current-weather {
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}

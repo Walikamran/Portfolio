@@ -1,4 +1,6 @@
 using ToekomstAcademie.Components;
+using ToekomstAcademie.Services;
+using System.Net.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,10 +8,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddScoped<WeatherService>();
-
 builder.Services.AddScoped<ToekomstAcademie.Services.TaskService>();
 
+builder.Services.AddHttpClient<WeatherService>();
+
+builder.Services.AddHttpClient<WeatherService>(client =>
+{
+    client.BaseAddress = new Uri("https://api.openweathermap.org/data/2.5/");
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

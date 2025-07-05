@@ -1,128 +1,171 @@
 ﻿@page "/weather"
 @inject WeatherService WeatherService
+@implements IDisposable
+@using System.Threading
+@using ToekomstAcademie.Models
+@using ToekomstAcademie.Services
+<PageTitle>Weer</PageTitle>
 
-<div class="max-w-4xl mx-auto p-6 font-sans bg-gray-50 min-h-screen">
-
-    <h1 class="text-4xl font-extrabold mb-8 text-center text-blue-700">🌤️ Weer & Nieuws</h1>
-
-    <div class="mb-6 flex justify-center">
-        <input @bind="LocationInput" placeholder="Voer locatie in..." 
-               class="border border-gray-300 rounded-md p-2 w-72 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <button class="ml-3 bg-blue-600 text-white px-4 rounded-md hover:bg-blue-700"
-                @onclick="OnSearch">Zoek</button>
+<div class="weather-container">
+    <div class="weather-header">
+        <h1>Weer Dashboard</h1>
+        <div class="location-selector">
+            <input @bind="location" placeholder="Voer locatie in" />
+            <button @onclick="UpdateWeather" class="btn btn-primary">Bijwerken</button>
+        </div>
     </div>
 
-    @if (IsLoading)
+    @if (isLoading)
     {
-        <p class="text-center text-gray-600">Laden...</p>
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Weerdata ophalen...</p>
+        </div>
     }
-    else if (CurrentWeather == null)
+    else if (weatherData != null)
     {
-        <p class="text-center text-red-600">Weergegevens niet gevonden voor "@LocationInput".</p>
-    }
-    else
-    {
-        <section class="bg-white rounded-lg shadow p-6 mb-8">
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    <h2 class="text-3xl font-bold">@CurrentWeather.Location</h2>
-                    <p class="text-gray-500 text-sm">Laatst bijgewerkt: @CurrentWeather.Updated.ToString("HH:mm")</p>
+        <div class="current-weather">
+            <div class="main-info">
+                <h2>@weatherData.Location</h2>
+                <div class="temperature">
+                    <span class="current-temp">@weatherData.CurrentTemp°C</span>
+                    <span class="feels-like">Voelt als @weatherData.FeelsLike°C</span>
                 </div>
-                <img src="@GetWeatherIcon(CurrentWeather.ConditionCode)" alt="Weer icoon" class="w-20 h-20" />
-            </div>
-
-            <div class="flex items-center space-x-10 mb-4">
-                <div class="text-6xl font-bold text-yellow-500">@CurrentWeather.Temperature°C</div>
-                <div class="space-y-1">
-                    <p><strong>Gevoelstemperatuur:</strong> @CurrentWeather.FeelsLike°C</p>
-                    <p><strong>Vochtigheid:</strong> @CurrentWeather.Humidity%</p>
-                    <p><strong>Wind:</strong> @CurrentWeather.WindSpeed km/u</p>
-                    <p><strong>Zonsopgang:</strong> @CurrentWeather.Sunrise.ToLocalTime().ToString("HH:mm")</p>
-                    <p><strong>Zonsondergang:</strong> @CurrentWeather.Sunset.ToLocalTime().ToString("HH:mm")</p>
+                <div class="conditions">
+                    <img src="@GetWeatherIcon(weatherData.WeatherCondition)" alt="@weatherData.WeatherCondition" />
+                    <span>@weatherData.WeatherCondition</span>
                 </div>
             </div>
 
-            <p class="italic text-gray-700">"@CurrentWeather.Condition"</p>
-        </section>
+            <div class="weather-details">
+                <div class="detail-card">
+                    <i class="fas fa-wind"></i>
+                    <span>Wind</span>
+                    <span>@weatherData.WindSpeed km/u</span>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-tint"></i>
+                    <span>Vochtigheid</span>
+                    <span>@weatherData.Humidity%</span>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-cloud-rain"></i>
+                    <span>Neerslag</span>
+                    <span>@weatherData.Precipitation mm</span>
+                </div>
+                <div class="detail-card">
+                    <i class="fas fa-sun"></i>
+                    <span>UV Index</span>
+                    <span>@weatherData.UVIndex</span>
+                </div>
+            </div>
+        </div>
 
-        <section class="mb-8">
-            <h3 class="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">3-daagse voorspelling</h3>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach(var day in Forecast)
+        <div class="hourly-forecast">
+            <h3>Uurlijkse Voorspelling</h3>
+            <div class="hourly-scroll">
+                @foreach (var hour in weatherData.HourlyForecast)
                 {
-                    <div class="bg-white rounded-lg shadow p-4 text-center">
-                        <p class="font-semibold">@day.Date.ToString("ddd dd MMM")</p>
-                        <img src="@GetWeatherIcon(day.ConditionCode)" alt="Weer icoon" class="mx-auto w-12 h-12" />
-                        <p>Max: @day.TempMax°C</p>
-                        <p>Min: @day.TempMin°C</p>
+                    <div class="hour-card">
+                        <span>@hour.Time.ToString("HH:mm")</span>
+                        <img src="@GetWeatherIcon(hour.Condition)" alt="@hour.Condition" />
+                        <span>@hour.Temperature°C</span>
                     </div>
                 }
             </div>
-        </section>
+        </div>
 
-        <section>
-            <h3 class="text-2xl font-semibold mb-4 border-b border-gray-300 pb-2">Laatste weernieuws</h3>
-            <ul class="space-y-4">
-                @foreach(var article in CurrentWeather.News)
-                {
-                    <li>
-                        <a href="@article.Url" target="_blank" class="text-blue-600 hover:underline font-medium">
-                            @article.Title
-                        </a>
-                        <div class="text-sm text-gray-500">@article.Published.ToString("dd MMM yyyy")</div>
-                    </li>
-                }
-            </ul>
-        </section>
+        <div class="daily-forecast">
+            <h3>5-daagse Voorspelling</h3>
+            @foreach (var day in weatherData.DailyForecast)
+            {
+                <div class="day-card">
+                    <span>@day.Date.ToString("dddd")</span>
+                    <div class="day-temps">
+                        <span>@day.MaxTemp°C</span>
+                        <span class="min-temp">@day.MinTemp°C</span>
+                    </div>
+                    <img src="@GetWeatherIcon(day.Condition)" alt="@day.Condition" />
+                    <span>@day.Condition</span>
+                </div>
+            }
+        </div>
+    }
+    else if (errorMessage != null)
+    {
+        <div class="error-message">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>@errorMessage</p>
+            <button @onclick="RetryLoadWeather" class="btn btn-secondary">Probeer opnieuw</button>
+        </div>
     }
 </div>
 
 @code {
-    private string LocationInput = "Steenwijk";
-    private WeatherData? CurrentWeather;
-    private List<WeatherForecastDay> Forecast = new();
-    private bool IsLoading = false;
+    private WeatherData weatherData;
+    private string location = "Amsterdam";
+    private bool isLoading = true;
+    private string errorMessage;
+    private Timer autoRefreshTimer;
 
-    protected override async Task OnInitializedAsync()
-    {
-        await LoadWeather(LocationInput);
-    }
+ protected override async Task OnInitializedAsync()
+{
+    await LoadWeatherData();
+    autoRefreshTimer = new Timer(async _ => await LoadWeatherData(), null, 
+                               TimeSpan.FromMinutes(10), TimeSpan.FromMinutes(10));
+}
 
-    private async Task OnSearch()
+private async Task LoadWeatherData()
+{
+    try
     {
-        await LoadWeather(LocationInput);
-    }
-
-    private async Task LoadWeather(string location)
-    {
-        IsLoading = true;
+        isLoading = true;
+        errorMessage = null;
         StateHasChanged();
 
-        CurrentWeather = await WeatherService.GetWeatherAsync(location);
-        if (CurrentWeather != null)
-        {
-            Forecast = await WeatherService.GetForecastAsync(location);
-        }
-        else
-        {
-            Forecast.Clear();
-        }
-
-        IsLoading = false;
+        weatherData = await WeatherService.GetWeatherDataAsync(location);
+    }
+    catch (HttpRequestException ex)
+    {
+        errorMessage = $"API fout: {ex.StatusCode} - {ex.Message}";
+    }
+    catch (Exception ex)
+    {
+        errorMessage = $"Fout: {ex.Message}";
+    }
+    finally
+    {
+        isLoading = false;
         StateHasChanged();
     }
+}
 
-    private string GetWeatherIcon(string code)
+    private async Task UpdateWeather()
     {
-        return code.ToLower() switch
+        await LoadWeatherData();
+    }
+
+    private async Task RetryLoadWeather()
+    {
+        await LoadWeatherData();
+    }
+
+    private string GetWeatherIcon(string condition)
+    {
+        return condition switch
         {
-            "clear" => "https://openweathermap.org/img/wn/01d@2x.png",
-            "clouds" => "https://openweathermap.org/img/wn/03d@2x.png",
-            "rain" => "https://openweathermap.org/img/wn/09d@2x.png",
-            "thunderstorm" => "https://openweathermap.org/img/wn/11d@2x.png",
-            "snow" => "https://openweathermap.org/img/wn/13d@2x.png",
-            "mist" => "https://openweathermap.org/img/wn/50d@2x.png",
-            _ => "https://openweathermap.org/img/wn/01d@2x.png"
+            "Zonnig" => "/images/weather/sunny.png",
+            "Bewolkt" => "/images/weather/cloudy.png",
+            "Regen" => "/images/weather/rain.png",
+            "Sneeuw" => "/images/weather/snow.png",
+            "Onweer" => "/images/weather/thunderstorm.png",
+            "Mist" => "/images/weather/fog.png",
+            _ => "/images/weather/partly-cloudy.png"
         };
+    }
+
+    public void Dispose()
+    {
+        autoRefreshTimer?.Dispose();
     }
 }
